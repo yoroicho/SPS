@@ -14,9 +14,8 @@ import preCon.*;
  */
 public class SendJDialog extends javax.swing.JDialog {
 
-private Frame thisFrame;
-private JDialogConfig jDialogCofig;
-private ConfigOkCancelDialog configOkCancelDialog;
+    private ConfigOkCancelDialog configOkCancelDialog;
+
     /**
      * Creates new form SendJDialog
      */
@@ -26,10 +25,10 @@ private ConfigOkCancelDialog configOkCancelDialog;
         this.buttonGroup1.add(jRadioButton1);
         this.buttonGroup1.add(jRadioButton2);
         this.buttonGroup1.add(jRadioButton3);
-this.thisFrame = parent;
-this.setModal(false);
-//this.jDialogCofig = new JDialogConfig(parent,true);
-configOkCancelDialog = new ConfigOkCancelDialog(parent , true);
+
+        this.setModal(false);  // Must!
+
+        configOkCancelDialog = new ConfigOkCancelDialog(parent, true);
     }
 
     /**
@@ -147,8 +146,8 @@ configOkCancelDialog = new ConfigOkCancelDialog(parent , true);
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
 
         System.out.println("lost");
- 
-this.jComboBoxItem.setVisible(false);
+
+        this.jComboBoxItem.setVisible(false);
 
         this.jPasswordField1.setVisible(false);
         this.setSize(100, 0);
@@ -171,12 +170,7 @@ this.jComboBoxItem.setVisible(false);
     }//GEN-LAST:event_jComboBoxItemHierarchyChanged
 
     private void jComboBoxItemItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxItemItemStateChanged
-                   if(this.jComboBoxItem.getSelectedItem().toString().equals("-NFR-")){
-                       //jDialogCofig.setVisible(true);
-                       //configOkCancelDialog.setVisible(true);
-     }else{
-                System.out.println("NO NFR");
-            }
+
     }//GEN-LAST:event_jComboBoxItemItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
