@@ -186,7 +186,7 @@ public class SendJDialog extends javax.swing.JDialog {
             
             configOkCancelDialog.setVisible(true);
             
-            configOkCancelDialog.setFileXML(file);
+            configOkCancelDialog.setFilelocText();
         } else if (selected == JFileChooser.CANCEL_OPTION) {
             System.out.println("キャンセルされました");
         } else if (selected == JFileChooser.ERROR_OPTION) {
