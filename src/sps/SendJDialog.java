@@ -6,6 +6,8 @@
 package sps;
 
 import java.awt.Frame;
+import java.io.File;
+import javax.swing.JFileChooser;
 import preCon.*;
 
 /**
@@ -174,7 +176,22 @@ public class SendJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jComboBoxItemItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        configOkCancelDialog.setVisible(true);
+        JFileChooser filechooser = new JFileChooser();
+
+        int selected = filechooser.showOpenDialog(this);
+        if (selected == JFileChooser.APPROVE_OPTION) {
+            File file = filechooser.getSelectedFile();
+            System.out.println(file.getName());
+            configOkCancelDialog.setFileXML(file);
+            
+            configOkCancelDialog.setVisible(true);
+            
+            configOkCancelDialog.setFileXML(file);
+        } else if (selected == JFileChooser.CANCEL_OPTION) {
+            System.out.println("キャンセルされました");
+        } else if (selected == JFileChooser.ERROR_OPTION) {
+            System.out.println("エラー又は取消しがありました");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
