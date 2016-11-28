@@ -32,6 +32,13 @@ import javax.swing.KeyStroke;
 public class ConfigOkCancelDialog extends javax.swing.JDialog {
 
     /**
+     * @param sendJDialog the sendJDialog to set
+     */
+    public void setSendJDialog(SendJDialog sendJDialog) {
+        this.sendJDialog = sendJDialog;
+    }
+
+    /**
      * @param fileXML the fileXML to set
      */
     public void setFileXML(File fileXML) {
@@ -46,21 +53,24 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
-
+    
+    private SendJDialog sendJDialog;
+    
     private String mainTitle;
     private String subTitle;
     private String url;
     private String userName;
-    private String passCodeA;
-    private String passCodeB;
+    private String passCode;
     private String comment;
-
+    
     private File fileXML;
-
-    public void setFilelocText() {
-        this.jLabelFile.setText(this.fileXML.getPath());
+    
+    Properties prop = new Properties();
+    
+    public void setFilelocText(File fileName) {
+        this.jLabelFile.setText(fileName.getPath());
     }
-
+    
     ;
     
     
@@ -68,18 +78,18 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
      * Write to XML file on Encryption.
      */
     private void readFile() throws FileNotFoundException, IOException, Exception {
-        Properties prop = new Properties();
+        
         InputStream is = new FileInputStream(fileXML);
         prop.loadFromXML(is); // is はこのメソッドが終了すると close される
 
-        System.out.println("DecTG:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("tg")));
-        System.out.println("DecMT:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("mt")));//prop.setProperty("mt", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), mainTitle));
-        System.out.println("DecST:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("st")));//prop.setProperty("st", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), subTitle));
-        System.out.println("DecUP:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("up")));//prop.setProperty("up", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), url));
-        System.out.println("DecUN:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("un")));//prop.setProperty("un", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), userName));
-        System.out.println("DecPC:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("pc")));//prop.setProperty("pc", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), passCodeA + passCodeB));
-        System.out.println("DecCT:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("ct")));//prop.setProperty("ct", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), comment));
-        System.out.println("DecTM:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("tm")));//prop.setProperty("tm", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), strDate));
+        System.out.println("DecTG:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tg")));
+        System.out.println("DecMT:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("mt")));//prop.setProperty("mt", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), mainTitle));
+        System.out.println("DecST:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("st")));//prop.setProperty("st", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), subTitle));
+        //System.out.println("DecUP:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("up")));//prop.setProperty("up", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), url));
+        //System.out.println("DecUN:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("un")));//prop.setProperty("un", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), userName));
+        //System.out.println("DecPC:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("pc")));//prop.setProperty("pc", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), passCodeA + passCodeB));
+        //System.out.println("DecCT:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("ct")));//prop.setProperty("ct", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), comment));
+        //System.out.println("DecTM:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("tm")));//prop.setProperty("tm", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), strDate));
 
     }
 
@@ -122,10 +132,10 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         jLabelFile = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldPreKey = new javax.swing.JTextField();
         jButtonPassSet = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jPasswordFieldPrePass = new javax.swing.JPasswordField();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -178,7 +188,7 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelButton))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jTextFieldPreKey)
+                        .addComponent(jPasswordFieldPrePass)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonPassSet)))
                 .addContainerGap())
@@ -193,8 +203,8 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
                 .addComponent(jLabelFile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldPreKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPassSet))
+                    .addComponent(jButtonPassSet)
+                    .addComponent(jPasswordFieldPrePass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -212,6 +222,21 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        PassItem passItem = new PassItem();
+        try {
+            passItem.setTag(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tg")));
+            passItem.setMainTitle(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("mt")));
+            passItem.setSubTitle(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("st")));
+            passItem.setUrl(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("up")));
+            passItem.setUserName(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("un")));
+            passItem.setPassCode(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("pc")));
+            passItem.setComment(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("ct")));
+            passItem.setTime(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tm")));
+          sendJDialog.setPassMap(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tg")), passItem);
+        } catch (Exception ex) {
+            Logger.getLogger(ConfigOkCancelDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -233,7 +258,7 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
             Logger.getLogger(ConfigOkCancelDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonPassSetActionPerformed
-
+    
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
@@ -287,9 +312,9 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
     private javax.swing.JButton jButtonPassSet;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelFile;
+    private javax.swing.JPasswordField jPasswordFieldPrePass;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextFieldPreKey;
     private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables
 

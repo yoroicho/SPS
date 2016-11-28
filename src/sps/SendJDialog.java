@@ -7,6 +7,7 @@ package sps;
 
 import java.awt.Frame;
 import java.io.File;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 import preCon.*;
 
@@ -17,22 +18,34 @@ import preCon.*;
 public class SendJDialog extends javax.swing.JDialog {
 
     private ConfigOkCancelDialog configOkCancelDialog;
-
+        HashMap<String ,PassItem > passMap = new HashMap <String ,PassItem >();
     /**
      * Creates new form SendJDialog
      */
     public SendJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+               
         this.buttonGroup1.add(jRadioButton1);
         this.buttonGroup1.add(jRadioButton2);
         this.buttonGroup1.add(jRadioButton3);
 
         this.setModal(false);  // Must!
 
+
+        
+        
         configOkCancelDialog = new ConfigOkCancelDialog(parent, true);
+        configOkCancelDialog.setSendJDialog(this);
     }
 
+    public String parentTest(){
+        return "parentTest is OK.";
+    }
+    
+    public void setPassMap  (String tag, PassItem passItem){
+        passMap.put(tag, passItem);        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,6 +93,11 @@ public class SendJDialog extends javax.swing.JDialog {
         jComboBoxItem.addHierarchyListener(new java.awt.event.HierarchyListener() {
             public void hierarchyChanged(java.awt.event.HierarchyEvent evt) {
                 jComboBoxItemHierarchyChanged(evt);
+            }
+        });
+        jComboBoxItem.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jComboBoxItemFocusGained(evt);
             }
         });
         jComboBoxItem.addInputMethodListener(new java.awt.event.InputMethodListener() {
@@ -183,16 +201,23 @@ public class SendJDialog extends javax.swing.JDialog {
             File file = filechooser.getSelectedFile();
             System.out.println(file.getName());
             configOkCancelDialog.setFileXML(file);
-            
+            configOkCancelDialog.setFilelocText(file);
             configOkCancelDialog.setVisible(true);
+                    jComboBoxItem.removeAllItems();
+                    for(String tag:passMap.keySet()){
+                        jComboBoxItem.addItem(tag);
+                    }
             
-            configOkCancelDialog.setFilelocText();
         } else if (selected == JFileChooser.CANCEL_OPTION) {
             System.out.println("キャンセルされました");
         } else if (selected == JFileChooser.ERROR_OPTION) {
             System.out.println("エラー又は取消しがありました");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBoxItemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBoxItemFocusGained
+
+    }//GEN-LAST:event_jComboBoxItemFocusGained
 
     /**
      * @param args the command line arguments
