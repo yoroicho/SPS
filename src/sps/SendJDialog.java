@@ -218,10 +218,20 @@ public class SendJDialog extends javax.swing.JDialog {
                 Robot robot = new Robot();
 
                 Keyboard keyboard = new Keyboard(robot);
-
-                switch (buttonGroupMode.getButtonCount()) {
+                int radioButtonFlag = -1;
+                if (this.jRadioButton1.isSelected()) {
+                    radioButtonFlag = 0;
+                }
+                if (this.jRadioButton2.isSelected()) {
+                    radioButtonFlag = 1;
+                }
+                if (this.jRadioButton3.isSelected()) {
+                    radioButtonFlag = 2;
+                }
+                switch (radioButtonFlag) {
                     case 0:
                         keyboard.doTyping(passMap.get(this.jComboBoxItem.getSelectedItem()).getUrl());
+                        System.out.println("case 0 " + passMap.get(this.jComboBoxItem.getSelectedItem()).getUrl());
                         break;
                     case 1:
                         keyboard.doTyping(passMap.get(this.jComboBoxItem.getSelectedItem()).getUserName());
