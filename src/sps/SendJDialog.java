@@ -5,9 +5,16 @@
  */
 package sps;
 
+import java.awt.AWTException;
 import java.awt.Frame;
+import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import preCon.*;
 
@@ -18,34 +25,68 @@ import preCon.*;
 public class SendJDialog extends javax.swing.JDialog {
 
     private ConfigOkCancelDialog configOkCancelDialog;
-        HashMap<String ,PassItem > passMap = new HashMap <String ,PassItem >();
+    HashMap<String, PassItem> passMap = new HashMap<String, PassItem>();
+
     /**
      * Creates new form SendJDialog
      */
     public SendJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-               
-        this.buttonGroup1.add(jRadioButton1);
-        this.buttonGroup1.add(jRadioButton2);
-        this.buttonGroup1.add(jRadioButton3);
+
+        this.buttonGroupMode.add(jRadioButton1);
+        this.buttonGroupMode.add(jRadioButton2);
+        this.buttonGroupMode.add(jRadioButton3);
 
         this.setModal(false);  // Must!
 
-
-        
-        
         configOkCancelDialog = new ConfigOkCancelDialog(parent, true);
         configOkCancelDialog.setSendJDialog(this);
     }
 
-    public String parentTest(){
+    public boolean CodeCheck(char[] code) {
+
+//
+        Calendar c = Calendar.getInstance();
+
+        //
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+        //System.out.println(sdf.format(c.getTime()));
+        char[] sdfChar = sdf.format(c.getTime()).toCharArray();
+        for (char k : sdfChar) {
+            System.out.println(k);
+        }
+        int j = 8;
+        boolean flag = true;
+        for (char codePiece : code) {
+            System.out.println(Character.getNumericValue(codePiece));
+            if (Character.getNumericValue(codePiece)
+                    != 9 - Character.getNumericValue(sdfChar[j])) {
+                System.out.println("false Piece");
+                flag = false;
+                break;
+            } else {
+                System.out.println("true Piece");
+                j++;
+            }
+        }
+
+        System.out.println("Anser" + flag);
+        return flag;
+        //
+        //sdf.applyPattern("a hh:mm:ss SSS");
+        //System.out.println(sdf.format(c.getTime()));
+
+    }
+
+    public String parentTest() {
         return "parentTest is OK.";
     }
-    
-    public void setPassMap  (String tag, PassItem passItem){
-        passMap.put(tag, passItem);        
+
+    public void setPassMap(String tag, PassItem passItem) {
+        passMap.put(tag, passItem);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,7 +96,7 @@ public class SendJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroupMode = new javax.swing.ButtonGroup();
         jComboBoxItem = new javax.swing.JComboBox();
         jPasswordField1 = new javax.swing.JPasswordField();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -160,17 +201,10 @@ public class SendJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
-        this.setSize(100, 100);
+        //this.setSize(100, 100);
     }//GEN-LAST:event_formFocusGained
 
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
-
-        System.out.println("lost");
-
-        this.jComboBoxItem.setVisible(false);
-
-        this.jPasswordField1.setVisible(false);
-        this.setSize(100, 0);
     }//GEN-LAST:event_formFocusLost
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
@@ -178,6 +212,32 @@ public class SendJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
+        System.out.println(evt.toString());
+        if (CodeCheck(this.jPasswordField1.getPassword())) {
+            try {
+                Robot robot = new Robot();
+
+                Keyboard keyboard = new Keyboard(robot);
+
+                switch (buttonGroupMode.getButtonCount()) {
+                    case 0:
+                        keyboard.doTyping(passMap.get(this.jComboBoxItem.getSelectedItem()).getUrl());
+                        break;
+                    case 1:
+                        keyboard.doTyping(passMap.get(this.jComboBoxItem.getSelectedItem()).getUserName());
+                        break;
+                    case 2:
+                        keyboard.doTyping(passMap.get(this.jComboBoxItem.getSelectedItem()).getPassCode());
+                        break;
+                    default:
+                        System.out.append("Select Error!");
+                }
+            } catch (AWTException ex) {
+                Logger.getLogger(SendJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(SendJDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         this.setSize(100, 0);
     }//GEN-LAST:event_formWindowLostFocus
 
@@ -203,11 +263,11 @@ public class SendJDialog extends javax.swing.JDialog {
             configOkCancelDialog.setFileXML(file);
             configOkCancelDialog.setFilelocText(file);
             configOkCancelDialog.setVisible(true);
-                    jComboBoxItem.removeAllItems();
-                    for(String tag:passMap.keySet()){
-                        jComboBoxItem.addItem(tag);
-                    }
-            
+            jComboBoxItem.removeAllItems();
+            for (String tag : passMap.keySet()) {
+                jComboBoxItem.addItem(tag);
+            }
+
         } else if (selected == JFileChooser.CANCEL_OPTION) {
             System.out.println("キャンセルされました");
         } else if (selected == JFileChooser.ERROR_OPTION) {
@@ -265,7 +325,7 @@ public class SendJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroupMode;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBoxItem;
     private javax.swing.JPasswordField jPasswordField1;
