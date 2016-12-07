@@ -5,13 +5,14 @@
  */
 package sps;
 
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.security.Key;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+//import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 /**
  * AES暗号化のテスト

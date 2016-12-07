@@ -53,24 +53,24 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
      * A return status code - returned if OK button has been pressed
      */
     public static final int RET_OK = 1;
-    
+
     private SendJDialog sendJDialog;
-    
+
     private String mainTitle;
     private String subTitle;
     private String url;
     private String userName;
     private String passCode;
     private String comment;
-    
+
     private File fileXML;
-    
+
     Properties prop = new Properties();
-    
+
     public void setFilelocText(File fileName) {
         this.jLabelFile.setText(fileName.getPath());
     }
-    
+
     ;
     
     
@@ -78,7 +78,7 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
      * Write to XML file on Encryption.
      */
     private void readFile() throws FileNotFoundException, IOException, Exception {
-        
+
         InputStream is = new FileInputStream(fileXML);
         prop.loadFromXML(is); // is はこのメソッドが終了すると close される
 
@@ -99,6 +99,8 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
     public ConfigOkCancelDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.jPasswordFieldPrePass.setText(null);
+        okButton.setEnabled(false);
 
         // Close the dialog when Esc is pressed
         String cancelName = "cancel";
@@ -232,15 +234,20 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
             passItem.setPassCode(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("pc")));
             passItem.setComment(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("ct")));
             passItem.setTime(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tm")));
-          sendJDialog.setPassMap(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tg")), passItem);
+            sendJDialog.setPassMap(CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tg")), passItem);
         } catch (Exception ex) {
             Logger.getLogger(ConfigOkCancelDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        jPasswordFieldPrePass.setText(null);
+        okButton.setEnabled(false);
+        jButtonPassSet.setEnabled(true);
         doClose(RET_OK);
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        jPasswordFieldPrePass.setText(null);
+        okButton.setEnabled(false);
+        jButtonPassSet.setEnabled(true);
         doClose(RET_CANCEL);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -254,11 +261,13 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
     private void jButtonPassSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPassSetActionPerformed
         try {
             readFile();
+            okButton.setEnabled(true);
+            jButtonPassSet.setEnabled(false);
         } catch (Exception ex) {
             Logger.getLogger(ConfigOkCancelDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonPassSetActionPerformed
-    
+
     private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);

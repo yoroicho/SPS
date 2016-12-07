@@ -14,6 +14,7 @@ import static java.awt.event.KeyEvent.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -30,6 +31,7 @@ public class Keyboard {
 
     public void doTyping(String letter) throws Exception {
         Keyboard keyboard = new Keyboard();
+        robot.delay(500);
         keyboard.type(letter);
     }
 
@@ -356,7 +358,8 @@ public class Keyboard {
             return;
         }
         if (keyCodes[offset] == VK_UNDERSCORE) { // '_'
-            robot.delay(1000);
+           robot.delay(1000);
+            /**
             Toolkit kit = Toolkit.getDefaultToolkit();
             Clipboard clip = kit.getSystemClipboard();
             try {
@@ -375,6 +378,8 @@ public class Keyboard {
             } catch (UnsupportedFlavorException | IOException e) {
                 System.out.println(e);
             }
+            */
+            JOptionPane.showMessageDialog(null, "Press the [U.S.] key and then press the Ok button."); // Key with hand.
             robot.delay(1000);
         } else {
             robot.keyPress(keyCodes[offset]);

@@ -58,6 +58,9 @@ public class SendJDialog extends javax.swing.JDialog {
         }
         int j = 8;
         boolean flag = true;
+        if (code.length != 4) {
+            flag = false;
+        }
         for (char codePiece : code) {
             System.out.println(Character.getNumericValue(codePiece));
             if (Character.getNumericValue(codePiece)
@@ -103,9 +106,11 @@ public class SendJDialog extends javax.swing.JDialog {
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
+        jToggleButtonDecisionSend = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setIconImage(null);
         setModalExclusionType(java.awt.Dialog.ModalExclusionType.TOOLKIT_EXCLUDE);
         setResizable(false);
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -116,12 +121,36 @@ public class SendJDialog extends javax.swing.JDialog {
                 formFocusLost(evt);
             }
         });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                formMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
+        });
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
             }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
                 formWindowLostFocus(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
             }
         });
 
@@ -149,18 +178,23 @@ public class SendJDialog extends javax.swing.JDialog {
             }
         });
 
-        jPasswordField1.setText("jPasswordField1");
-
         jRadioButton1.setText("jRadioButton1");
 
         jRadioButton2.setText("jRadioButton1");
 
         jRadioButton3.setText("jRadioButton1");
 
-        jButton1.setText("jButton1");
+        jButton1.setText("R/F");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jToggleButtonDecisionSend.setText("DS");
+        jToggleButtonDecisionSend.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jToggleButtonDecisionSendStateChanged(evt);
             }
         });
 
@@ -169,7 +203,7 @@ public class SendJDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jComboBoxItem, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPasswordField1)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -177,43 +211,46 @@ public class SendJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jRadioButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButtonDecisionSend)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jComboBoxItem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jRadioButton1)
+                        .addComponent(jRadioButton2)
+                        .addComponent(jRadioButton3))
+                    .addComponent(jToggleButtonDecisionSend))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
-        //this.setSize(100, 100);
+       
     }//GEN-LAST:event_formFocusGained
 
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
     }//GEN-LAST:event_formFocusLost
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        this.setSize(100, 120); // Windows OS => (100,100)
+       this.setSize(116, 160);
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
         System.out.println(evt.toString());
-        if (CodeCheck(this.jPasswordField1.getPassword())) {
+        if (CodeCheck(this.jPasswordField1.getPassword())
+                && this.jToggleButtonDecisionSend.isSelected()) {
             try {
                 Robot robot = new Robot();
 
@@ -248,19 +285,26 @@ public class SendJDialog extends javax.swing.JDialog {
                 Logger.getLogger(SendJDialog.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        this.setSize(100, 0);
+        if (this.jRadioButton3.isSelected()) {
+            this.jPasswordField1.setText(null);
+        }
+        this.setSize(116, 0);
+        this.jToggleButtonDecisionSend.setSelected(false);
     }//GEN-LAST:event_formWindowLostFocus
 
     private void jComboBoxItemInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jComboBoxItemInputMethodTextChanged
-
+        System.out.println("jComboBoxItemInputMethodTextChanged");
     }//GEN-LAST:event_jComboBoxItemInputMethodTextChanged
 
     private void jComboBoxItemHierarchyChanged(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_jComboBoxItemHierarchyChanged
+        System.out.println("jComboBoxItemHierarchyChanged");
 
     }//GEN-LAST:event_jComboBoxItemHierarchyChanged
 
     private void jComboBoxItemItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxItemItemStateChanged
-
+        System.out.println("jComboBoxItemItemStateChanged");
+        buttonGroupMode.clearSelection();
+        jToggleButtonDecisionSend.setSelected(false);
     }//GEN-LAST:event_jComboBoxItemItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -288,6 +332,42 @@ public class SendJDialog extends javax.swing.JDialog {
     private void jComboBoxItemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jComboBoxItemFocusGained
 
     }//GEN-LAST:event_jComboBoxItemFocusGained
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        //this.setSize(100, 120); 
+    }//GEN-LAST:event_formMouseClicked
+
+    private void jToggleButtonDecisionSendStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jToggleButtonDecisionSendStateChanged
+        if (this.jToggleButtonDecisionSend.isSelected()) {
+            System.out.println("ON");
+            this.jPasswordField1.setEnabled(false);
+        } else if (!this.jToggleButtonDecisionSend.isSelected()) {
+            System.out.println("OFF");
+            this.jPasswordField1.setEnabled(true);
+        } else {
+            System.out.println("OTHER");
+        }
+    }//GEN-LAST:event_jToggleButtonDecisionSendStateChanged
+
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+  
+    }//GEN-LAST:event_formMouseEntered
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+           
+    }//GEN-LAST:event_formMousePressed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       
+    }//GEN-LAST:event_formWindowActivated
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
+
+    }//GEN-LAST:event_formMouseExited
 
     /**
      * @param args the command line arguments
@@ -342,5 +422,6 @@ public class SendJDialog extends javax.swing.JDialog {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JToggleButton jToggleButtonDecisionSend;
     // End of variables declaration//GEN-END:variables
 }
