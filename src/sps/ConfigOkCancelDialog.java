@@ -67,10 +67,11 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
 
     Properties prop = new Properties();
 
+    /**
     public void setFilelocText(File fileName) {
         this.jLabelFile.setText(fileName.getPath());
     }
-
+*/
     ;
     
     
@@ -81,16 +82,24 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
 
         InputStream is = new FileInputStream(fileXML);
         prop.loadFromXML(is); // is はこのメソッドが終了すると close される
+        String separator = System.getProperty("line.separator");
+        jTextAreaOutline.append("*** TITLE ***" + separator + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("mt")));//prop.setProperty("mt", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), mainTitle));
+        jTextAreaOutline.append(separator);
+        jTextAreaOutline.append("*** SUB TITLE ***" + separator + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("st")));
+        jTextAreaOutline.append(separator);
+        jTextAreaOutline.append("*** USER ***" + separator + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("un")));
+        jTextAreaOutline.append(separator);
+        jTextAreaOutline.append("*** COMMENT ***" + separator + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("ct")));
+        jTextAreaOutline.append(separator);
 
-        System.out.println("DecTG:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tg")));
-        System.out.println("DecMT:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("mt")));//prop.setProperty("mt", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), mainTitle));
-        System.out.println("DecST:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("st")));//prop.setProperty("st", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), subTitle));
+        // System.out.println("DecTG:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("tg")));
+        // System.out.println("DecMT:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("mt")));//prop.setProperty("mt", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), mainTitle));
+        // System.out.println("DecST:" + CipherAES128.DecodeAES128(String.valueOf(jPasswordFieldPrePass.getPassword()), prop.getProperty("st")));//prop.setProperty("st", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), subTitle));
         //System.out.println("DecUP:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("up")));//prop.setProperty("up", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), url));
         //System.out.println("DecUN:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("un")));//prop.setProperty("un", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), userName));
         //System.out.println("DecPC:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("pc")));//prop.setProperty("pc", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), passCodeA + passCodeB));
         //System.out.println("DecCT:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("ct")));//prop.setProperty("ct", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), comment));
         //System.out.println("DecTM:" + CipherAES128.DecodeAES128(this.jTextFieldPreKey.getText(), prop.getProperty("tm")));//prop.setProperty("tm", CipherAES128.encrypteCipherAES128(this.jTextFieldPreKey.getText(), strDate));
-
     }
 
     /**
@@ -132,11 +141,10 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
 
         okButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
-        jLabelFile = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButtonPassSet = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextAreaOutline = new javax.swing.JTextArea();
         jPasswordFieldPrePass = new javax.swing.JPasswordField();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -159,9 +167,7 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabelFile.setText("jLabel1");
-
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Outline");
 
         jButtonPassSet.setText("COM");
         jButtonPassSet.addActionListener(new java.awt.event.ActionListener() {
@@ -170,9 +176,9 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextAreaOutline.setColumns(20);
+        jTextAreaOutline.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaOutline);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,7 +188,6 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-                    .addComponent(jLabelFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -201,9 +206,7 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelFile)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonPassSet)
                     .addComponent(jPasswordFieldPrePass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -239,6 +242,8 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
             Logger.getLogger(ConfigOkCancelDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
         jPasswordFieldPrePass.setText(null);
+        jTextAreaOutline.setText(null);
+        //jLabelFile.setText(null);
         okButton.setEnabled(false);
         jButtonPassSet.setEnabled(true);
         doClose(RET_OK);
@@ -246,6 +251,8 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         jPasswordFieldPrePass.setText(null);
+        jTextAreaOutline.setText(null);
+        //jLabelFile.setText(null);
         okButton.setEnabled(false);
         jButtonPassSet.setEnabled(true);
         doClose(RET_CANCEL);
@@ -320,10 +327,9 @@ public class ConfigOkCancelDialog extends javax.swing.JDialog {
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton jButtonPassSet;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabelFile;
     private javax.swing.JPasswordField jPasswordFieldPrePass;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextAreaOutline;
     private javax.swing.JButton okButton;
     // End of variables declaration//GEN-END:variables
 

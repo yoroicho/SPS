@@ -47,7 +47,7 @@ public class CipherAES128 {
 
         // 平文
         byte[] plain = plainText.getBytes();
-        System.out.println(String.format("Plain       : %s", new String(plain)));
+        //System.out.println(String.format("Plain       : %s", new String(plain)));
         //System.out.println(String.format("Plain(hex)  : %s", toHexStr(plain)));
 
         // 暗号文
@@ -55,8 +55,8 @@ public class CipherAES128 {
         byte[] encode = c.doFinal(plain);
         // Base64エンコード
         String encryptedText = Base64.encode(encode);
-        System.out.println(encryptedText);
-        System.out.println(String.format("Encode      : %s", new String(encode)));
+        //System.out.println(encryptedText);
+        //System.out.println(String.format("Encode      : %s", new String(encode)));
         //System.out.println(String.format("Encode(hex) : %s", toHexStr(encode)));
 
         // 復号文
@@ -67,7 +67,7 @@ public class CipherAES128 {
         c.init(Cipher.DECRYPT_MODE, key, iv);
         //byte[] decode = c.doFinal(encode);
         byte[] decode = c.doFinal(encrypted);
-        System.out.println(String.format("Decode      : %s", new String(decode)));
+        //System.out.println(String.format("Decode      : %s", new String(decode)));
         //System.out.println(String.format("Decode(hex) : %s", toHexStr(decode)));
 
         return encryptedText;
@@ -113,7 +113,7 @@ public class CipherAES128 {
         c.init(Cipher.DECRYPT_MODE, key, iv);
         //byte[] decode = c.doFinal(encode);
         byte[] decode = c.doFinal(encrypted);
-        System.out.println(String.format("Decode      : %s", new String(decode)));
+        //System.out.println(String.format("Decode      : %s", new String(decode)));
         //System.out.println(String.format("Decode(hex) : %s", toHexStr(decode)));
 
         return new String(decode);
@@ -150,21 +150,21 @@ public class CipherAES128 {
         //Key key = new SecretKeySpec(keyStr, "AES");
 
         // 共通鍵
-        System.out.println(String.format("Key(hex)    : %s", toHexStr(key.getEncoded())));
+        //System.out.println(String.format("Key(hex)    : %s", toHexStr(key.getEncoded())));
 
         // 平文
         byte[] plain = "This is plain text.".getBytes();
-        System.out.println(String.format("Plain       : %s", new String(plain)));
-        System.out.println(String.format("Plain(hex)  : %s", toHexStr(plain)));
+        //System.out.println(String.format("Plain       : %s", new String(plain)));
+        //System.out.println(String.format("Plain(hex)  : %s", toHexStr(plain)));
 
         // 暗号文
         c.init(Cipher.ENCRYPT_MODE, key, iv);
         byte[] encode = c.doFinal(plain);
         // Base64エンコード
         String encryptedText = Base64.encode(encode);
-        System.out.println(encryptedText);
-        System.out.println(String.format("Encode      : %s", new String(encode)));
-        System.out.println(String.format("Encode(hex) : %s", toHexStr(encode)));
+        //System.out.println(encryptedText);
+        //System.out.println(String.format("Encode      : %s", new String(encode)));
+        //System.out.println(String.format("Encode(hex) : %s", toHexStr(encode)));
 
         // 復号文
         
@@ -174,8 +174,8 @@ public class CipherAES128 {
         c.init(Cipher.DECRYPT_MODE, key, iv);
         //byte[] decode = c.doFinal(encode);
         byte[] decode = c.doFinal(encrypted);
-        System.out.println(String.format("Decode      : %s", new String(decode)));
-        System.out.println(String.format("Decode(hex) : %s", toHexStr(decode)));
+        //System.out.println(String.format("Decode      : %s", new String(decode)));
+        //System.out.println(String.format("Decode(hex) : %s", toHexStr(decode)));
 
     }
 

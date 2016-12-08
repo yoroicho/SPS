@@ -379,8 +379,8 @@ public class Keyboard {
                 System.out.println(e);
             }
             */
-            JOptionPane.showMessageDialog(null, "Press the [U.S.] key and then press the Ok button."); // Key with hand.
-            robot.delay(1000);
+            JOptionPane.showMessageDialog(null, "Press the [U.S.] key => press the Ok button => click object"); // Key with hand.
+            robot.delay(3000);
         } else {
             robot.keyPress(keyCodes[offset]);
             doType(keyCodes, offset + 1, length - 1);
